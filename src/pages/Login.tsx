@@ -59,6 +59,15 @@ export default function Login() {
 
     try {
       if (view === 'login') {
+        // Client-side testing credential bypass
+        if ((email === 'testing' || email === 'testing@testing.com') && password === 'testing') {
+          localStorage.setItem('auth_token', 'test_token');
+          localStorage.setItem('token', 'test_token');
+          localStorage.setItem('user', JSON.stringify({ name: 'Test User', email: 'testing@testing.com', role: 'user' }));
+          navigate('/dashboard');
+          return;
+        }
+
         const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
