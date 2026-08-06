@@ -26,7 +26,8 @@ export default function NewCampaign() {
     if (!chatInput.trim()) return;
     
     // Clean URL to prevent fetch errors if env variable has quotes or spaces
-    let apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/['"]/g, '').trim().replace(/\/+$/, '');
+    let rawUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    let apiUrl = rawUrl.replace(/['"]/g, '').trim().split(' ')[0].replace(/\/+$/, '');
 
     
     setIsParsing(true);
@@ -68,7 +69,8 @@ export default function NewCampaign() {
     setError('');
 
     // Clean URL to prevent fetch errors
-    let apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/['"]/g, '').trim().replace(/\/+$/, '');
+    let rawUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    let apiUrl = rawUrl.replace(/['"]/g, '').trim().split(' ')[0].replace(/\/+$/, '');
 
     try {
       const token = localStorage.getItem('auth_token');
@@ -115,7 +117,8 @@ export default function NewCampaign() {
       }, 15000);
       // ----------------------------------
 
-      navigate(`/dashboard/campaigns/${startData.thread_id}`);
+      // Redirect to main dashboard, we don't have a specific campaign view yet
+      navigate(`/dashboard`);
 
     } catch (err: any) {
       setError(err.message || 'Network error.');
