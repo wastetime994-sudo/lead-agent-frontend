@@ -25,12 +25,16 @@ export default function NewCampaign() {
     e.preventDefault();
     if (!chatInput.trim()) return;
     
+    // Clean URL to prevent fetch errors if env variable has quotes or spaces
+    let apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/['"]/g, '').trim().replace(/\/+$/, '');
+
+    
     setIsParsing(true);
     setError('');
     
     try {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/campaigns/parse-prompt`, {
+      const res = await fetch(`${apiUrl}/campaigns/parse-prompt`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -63,12 +67,15 @@ export default function NewCampaign() {
     setIsProcessing(true);
     setError('');
 
+    // Clean URL to prevent fetch errors
+    let apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/['"]/g, '').trim().replace(/\/+$/, '');
+
     try {
       const token = localStorage.getItem('auth_token');
       // Short delay for animation
       await new Promise(resolve => setTimeout(resolve, 2500));
 
-      const startRes = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/campaigns/start`, {
+      const startRes = await fetch(`${apiUrl}/campaigns/start`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
